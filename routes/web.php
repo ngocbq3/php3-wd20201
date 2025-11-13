@@ -1,11 +1,10 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/about', function () {
     return "<h1>Trang giới thiệu</h1>";
@@ -32,4 +31,6 @@ Route::prefix('admin')->group(function () {
     })->name('admin.posts');
 });
 
-Route::get('/test', [TestController::class, 'index']);
+Route::get('/test/{id}', [TestController::class, 'index'])->name('posts.list');
+//Route chi tiết bài viết
+Route::get('/detail/{id}', [TestController::class, 'show'])->name('posts.detail');
