@@ -14,7 +14,7 @@
                     <th scope="col">Image</th>
                     <th scope="col">Category Name</th>
                     <th scope="col">
-                        <a href="" class="btn btn-primary">Create</a>
+                        <a href="{{ route('admin.posts.create') }}" class="btn btn-primary">Create</a>
                     </th>
                 </tr>
             </thead>
