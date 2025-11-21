@@ -19,7 +19,9 @@ class PostController extends Controller
         //Phân trang
         // $posts = Post::query()->paginate(10);
 
-        $posts = Post::with('category')->paginate(10);
+        $posts = Post::with('category')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -38,7 +40,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->except('image');
+        //Xử lý hình ảnh
+        if ($request->hasFile('image')) {
+            $image = $request->file('image')->store('images');
+            $data['image'] = $image;
+        }
+        //Lưu vào database
+        Post::query()->create($data);
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -54,7 +64,11 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $categories = Category::all();
+        //lấy bài viết
+        $post = Post::query()->find($id);
+        //gọi view
+        return view('admin.posts.edit', compact('categories', 'post'));
     }
 
     /**
@@ -62,7 +76,21 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $post = Post::query()->find($id);
+        //Lấy dữ liệu cập nhật
+        $data = $request->except('image');
+        //Xử lý hình ảnh
+        if ($request->hasFile('image')) {
+            $image = $request->file('image')->store('images');
+            $data['image'] = $image;
+        }
+
+        //Cập nhật vào CSDL
+        $post->update($data);
+
+        return redirect()
+            ->route('admin.posts.index')
+            ->with('success', 'Cập nhật dữ liệu thành công');
     }
 
     /**
@@ -70,6 +98,10 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::query()->find($id);
+        $post->delete();
+        return redirect()
+            ->route('admin.posts.index')
+            ->with('success', 'Xóa dữ liệu thành công');
     }
 }

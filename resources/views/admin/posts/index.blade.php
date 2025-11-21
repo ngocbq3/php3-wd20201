@@ -6,6 +6,10 @@
 
 @section('content')
     <div class="container">
+        @session('success')
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endsession
+
         <table class="table">
             <thead>
                 <tr>
@@ -24,11 +28,17 @@
                         <th scope="row">{{ $post->id }}</th>
                         <td>{{ $post->title }}</td>
                         <td>
-                            <img src="{{ $post->image }}" width="100" alt="">
+                            <img src="{{ Storage::URL($post->image) }}" width="100" alt="">
                         </td>
                         <td>{{ $post->category->name }}</td>
                         <td>
-                            edit/delete
+                            <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-primary">Edit</a>
+                            <form class="d-inline" action="{{ route('admin.posts.destroy', $post->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Bạn có muốn xóa không?')">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
