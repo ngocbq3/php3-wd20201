@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RequestStorePost;
+use App\Http\Requests\RequestUpdatePost;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -38,8 +40,9 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RequestStorePost $request)
     {
+
         $data = $request->except('image');
         //Xử lý hình ảnh
         if ($request->hasFile('image')) {
@@ -74,7 +77,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RequestUpdatePost $request, string $id)
     {
         $post = Post::query()->find($id);
         //Lấy dữ liệu cập nhật
