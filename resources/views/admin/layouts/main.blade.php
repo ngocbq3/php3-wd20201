@@ -11,7 +11,15 @@
 
 <body>
     <div class="container">
-        <nav>MENU</nav>
+        <nav>
+            @auth
+                {{ Auth::user()->email }}
+            @endauth
+            <form action="{{ route('logout') }}" method="post">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
+        </nav>
 
         @yield('content')
 

@@ -17,6 +17,10 @@
             @foreach ($categories as $cate)
                 <a href="{{ route('posts.list', $cate->id) }}">{{ $cate->name }}</a>
             @endforeach
+
+            <!-- Login logout -->
+            <a href="{{ route('login') }}">Login</a> |
+            <a href="{{ route('register') }}">Register</a>
         </nav>
         <div class="row">
             <h2>Bài viết mới nhất</h2>
